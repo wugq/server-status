@@ -3,7 +3,7 @@
 
 void buttonCheckState(buttonState *btnState, const int newState) {
     int changed = 0;
-    if (newState == BUTTON_OFF && btnState->state == BUTTON_ON) {
+    if (newState == LOW && btnState->state == HIGH) {
         btnState->pressedCount += 1;
         changed = 1;
     }

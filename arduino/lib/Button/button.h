@@ -3,11 +3,6 @@
 
 #endif //BUTTON_H
 
-typedef enum {
-    BUTTON_OFF = 0,
-    BUTTON_ON = 1,
-} ButtonState;
-
 typedef struct {
     int state;
     int pressedCount;
