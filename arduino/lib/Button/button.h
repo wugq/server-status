@@ -14,4 +14,4 @@ typedef struct {
     int stateChanged;
 } buttonState;
 
-void check_button_state(buttonState *btnState, int newState);
+void buttonCheckState(buttonState *btnState, int newState);

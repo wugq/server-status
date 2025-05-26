@@ -61,12 +61,12 @@ void loop() {
         printCommand(YELLOW_BTN_STATE.pressedCount);
     }
 
-    check_button_state(&YELLOW_BTN_STATE, digitalRead(YELLOW_BTN_PIN));
+    buttonCheckState(&YELLOW_BTN_STATE, digitalRead(YELLOW_BTN_PIN));
     if (YELLOW_BTN_STATE.stateChanged) {
         printCommand(YELLOW_BTN_STATE.pressedCount);
     }
 
-    check_button_state(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
+    buttonCheckState(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
 
 
     // display.setDot(1);
