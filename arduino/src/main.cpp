@@ -2,6 +2,8 @@
 #include <DIYables_4Digit7Segment_74HC595.h> // DIYables_4Digit7Segment_74HC595 library
 
 #include "button.h"
+#include "displayFourBitLed.h"
+#include "serverInfo.h"
 
 #define SCLK  4  // The Arduino pin connected to SCLK
 #define RCLK  3  // The Arduino pin connected to RCLK
@@ -14,7 +16,11 @@ constexpr int LED_PIN = 13; // the number of the LED pin
 int commandIndex = 0;
 int commands[4] = {1, 2, 3, 4};
 
-DIYables_4Digit7Segment_74HC595 display(SCLK, RCLK, DIO);
+// DIYables_4Digit7Segment_74HC595 display(SCLK, RCLK, DIO);
+
+displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG;
+
+// displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG)
 
 buttonState YELLOW_BTN_STATE = {
     .state = LOW,
@@ -23,6 +29,11 @@ buttonState YELLOW_BTN_STATE = {
 buttonState RED_BTN_STATE = {
     .state = LOW,
     .pressedCount = 0,
+};
+
+serverInfoData SERVER_INFO_Data = {
+    .cpuLoad = 0,
+    .ipAddress = 0,
 };
 
 String readSerialCommand() {
@@ -35,7 +46,7 @@ String readSerialCommand() {
 void printCommand(const int pressTime) {
     constexpr int commandCount = 4;
     const int command = commands[pressTime % commandCount];
-    display.printInt(command, false);
+    // display.printInt(command, false);
 }
 
 void setup() {
@@ -46,12 +57,24 @@ void setup() {
     pinMode(YELLOW_BTN_PIN, INPUT);
     pinMode(LED_PIN, OUTPUT);
 
+    displayFourBitLedInit(&DISPLAY_FOUR_BIT_LED_CONFIG, SCLK, RCLK, DIO);
+
     printCommand(YELLOW_BTN_STATE.pressedCount);
 }
 
 
 void loop() {
-    display.loop();
+    // displayFourBitLedRender();
+    // display.loop();
+    displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "192.1");
+    displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
+
+    const serverInfoData newInfo = {
+        .cpuLoad = SERVER_INFO_Data.cpuLoad + 1,
+        .ipAddress = SERVER_INFO_Data.ipAddress + 1,
+    };
+
+    serverInfoSet(&SERVER_INFO_Data, &newInfo);
 
     String command = readSerialCommand();
     if (command.length() > 0) {
@@ -67,7 +90,6 @@ void loop() {
     }
 
     buttonCheckState(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
-
 
     // display.setDot(1);
     // display.setDot(2);
