@@ -13,44 +13,6 @@ typedef struct {
     uint8_t *buffer;
 } displayFourBitLedConfig;
 
-typedef enum {
-
-} SegmentChar;
-
-
-// constexpr uint8_t ARRAY_SIZE = 27;
-// inline uint8_t segment_codes[ARRAY_SIZE];
-// inline char available_chars[ARRAY_SIZE];
-// available_chars[0] = '0';
-
-// available_chars[0] = "0";
-// available_chars[1] = "1";
-// available_chars[2] = "2";
-// available_chars[3] = "3";
-// available_chars[4] = "4";
-// available_chars[5] = "5";
-// available_chars[6] = "6";
-// available_chars[7] = "7";
-// available_chars[8] = "8";
-// available_chars[9] = "9";
-// available_chars[10] = "A";
-// available_chars[11] = "b";
-// available_chars[12] = "D";
-// available_chars[13] = "c";
-// available_chars[14] = "d";
-// available_chars[15] = "E";
-// available_chars[16] = "F";
-// available_chars[17] = "H";
-// available_chars[18] = "h";
-// available_chars[19] = "L";
-// available_chars[20] = "n";
-// available_chars[21] = "I";
-// available_chars[22] = "O";
-// available_chars[23] = "o";
-// available_chars[24] = "P";
-// available_chars[25] = "S";
-// available_chars[26] = " ";
-
 /**
  * Initialize the display config and set pinMode
  * @param config Display Config instance
