@@ -282,3 +282,20 @@ void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, const 
         }
     }
 }
+
+
+void displayFourBitLedSetFloatNumber(const displayFourBitLedConfig *config, const float number, int precision) {
+    // TODO: improve performance as the LEDs get dimmed.
+    const float divisor = pow(10, 4);
+    const float remainder = fmod(number, divisor);
+
+    if (precision > 3) {
+        precision = 3;
+    } else if (precision < 0) {
+        precision = 0;
+    }
+
+    const int theNumber = remainder * pow(10, precision);
+    displayFourBitLedSetIntNumber(config, theNumber);
+    config->buffer[3 - precision] &= DISPLAY_FONT_ICON_DOT;
+}

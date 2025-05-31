@@ -41,10 +41,19 @@ void displayFourBitLedClear(const displayFourBitLedConfig *config);
  * @param config Display Config instance
  * @param number the number
  */
-void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, const int number);
+void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, int number);
 
 /**
  * Render the content of the display
  * @param config Display Config instance
  */
 void displayFourBitLedRender(const displayFourBitLedConfig *config);
+
+
+/**
+ * Set the float number to display
+ * @param config Display Config instance
+ * @param number the number
+ * @param precision the precision of the number
+ */
+void displayFourBitLedSetFloatNumber(const displayFourBitLedConfig *config, float number, int precision);
