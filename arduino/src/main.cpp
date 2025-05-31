@@ -58,7 +58,8 @@ void setup() {
 
 
 void loop() {
-    displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
+    // displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
+    displayFourBitLedSetIntNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 9);
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
     const serverInfoData newInfo = {

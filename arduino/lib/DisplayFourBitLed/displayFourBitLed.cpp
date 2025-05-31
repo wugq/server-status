@@ -173,6 +173,32 @@ uint8_t getChar(const char ch) {
     }
 }
 
+uint8_t getNumber(const int number) {
+    if (number == 0) {
+        return DISPLAY_FONT_NUMBER_0;
+    } else if (number == 1) {
+        return DISPLAY_FONT_NUMBER_1;
+    } else if (number == 2) {
+        return DISPLAY_FONT_NUMBER_2;
+    } else if (number == 3) {
+        return DISPLAY_FONT_NUMBER_3;
+    } else if (number == 4) {
+        return DISPLAY_FONT_NUMBER_4;
+    } else if (number == 5) {
+        return DISPLAY_FONT_NUMBER_5;
+    } else if (number == 6) {
+        return DISPLAY_FONT_NUMBER_6;
+    } else if (number == 7) {
+        return DISPLAY_FONT_NUMBER_7;
+    } else if (number == 8) {
+        return DISPLAY_FONT_NUMBER_8;
+    } else if (number == 9) {
+        return DISPLAY_FONT_NUMBER_9;
+    } else {
+        return DISPLAY_FONT_ICON_SPACE;
+    }
+}
+
 // ============= public methods =============
 void displayFourBitLedInit(displayFourBitLedConfig *config, const int sclk, const int rclk, const int dio) {
     config->sclk_pin = sclk;
@@ -224,4 +250,33 @@ uint8_t displayFourBitLedSetString(const displayFourBitLedConfig *config, const 
     }
 
     return index;
+}
+
+void displayFourBitLedClear(const displayFourBitLedConfig *config) {
+    for (uint8_t i = 0; i < 4; i++) {
+        config->buffer[i] = DISPLAY_FONT_ICON_SPACE;
+    }
+}
+
+void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, const int number) {
+    int base = 10000;
+    int theNumber = number % base;
+    uint8_t numberStarted = 0;
+
+    base /= 10;
+    for (int i = 0; i < 4; i++) {
+        const int num = theNumber / base;
+
+        if (num != 0) {
+            numberStarted = 1;
+        }
+
+        theNumber %= base;
+        base /= 10;
+        if (num == 0 && numberStarted == 0 && i != 3) {
+            config->buffer[i] = DISPLAY_FONT_ICON_SPACE;
+        } else {
+            config->buffer[i] = getNumber(num);
+        }
+    }
 }
