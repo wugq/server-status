@@ -66,7 +66,7 @@ void setup() {
 void loop() {
     // displayFourBitLedRender();
     // display.loop();
-    displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "192.1");
+    displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "192.168.1.1");
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
     const serverInfoData newInfo = {

@@ -195,19 +195,32 @@ void displayFourBitLedRender(const displayFourBitLedConfig *config) {
     }
 }
 
-void displayFourBitLedSetString(const displayFourBitLedConfig *config, const char *str) {
-    int position = 0;
-    // char previous = '\0';
-    for (; position < 4; position++) {
-        if (str[position] == '\0') {
+uint8_t displayFourBitLedSetString(const displayFourBitLedConfig *config, const char *str) {
+    uint8_t index = 0;
+    uint8_t position = 0;
+    uint8_t previousIsNumber = 0;
+
+    for (; index < 8 && position < 4; index++) {
+        if (str[index] == '\0') {
             break;
         }
 
-        config->buffer[position] = getChar(str[position]);
-        // previous = str[position];
+        if (previousIsNumber == 1 && str[index] == '.') {
+            config->buffer[position - 1] &= 0x7F;
+            previousIsNumber = 0;
+            continue;
+        }
+
+        config->buffer[position] = getChar(str[index]);
+        position++;
+        if (str[index] <= '9' && str[index] >= '0') {
+            previousIsNumber = 1;
+        }
     }
 
     for (; position < 4; position++) {
         config->buffer[position] = DISPLAY_FONT_ICON_SPACE;
     }
+
+    return index;
 }

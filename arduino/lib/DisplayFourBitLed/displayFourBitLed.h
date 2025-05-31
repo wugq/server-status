@@ -66,6 +66,6 @@ void displayFourBitLedInit(displayFourBitLedConfig *config, int sclk, int rclk, 
  * @param str the string, maximum 4 bytes
  * @return the length of the string
  */
-void displayFourBitLedSetString(const displayFourBitLedConfig *config, const char *str);
+uint8_t displayFourBitLedSetString(const displayFourBitLedConfig *config, const char *str);
 
 void displayFourBitLedRender(const displayFourBitLedConfig *config);
