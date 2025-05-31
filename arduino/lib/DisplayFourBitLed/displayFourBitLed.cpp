@@ -261,19 +261,19 @@ void displayFourBitLedClear(const displayFourBitLedConfig *config) {
 void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, const int number) {
     int base = 10000;
     int theNumber = number % base;
-    uint8_t numberStarted = 0;
+    uint8_t isNumberStarted = 0;
 
     base /= 10;
     for (int i = 0; i < 4; i++) {
         const int num = theNumber / base;
 
         if (num != 0) {
-            numberStarted = 1;
+            isNumberStarted = 1;
         }
 
         theNumber %= base;
         base /= 10;
-        if (num == 0 && numberStarted == 0 && i != 3) {
+        if (num == 0 && isNumberStarted == 0 && i != 3) {
             config->buffer[i] = DISPLAY_FONT_ICON_SPACE;
         } else {
             config->buffer[i] = getNumber(num);
