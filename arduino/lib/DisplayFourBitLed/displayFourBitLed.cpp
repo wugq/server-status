@@ -26,6 +26,7 @@
 // 0 is on, 1 is off;
 #define DISPLAY_FONT_ICON_SPACE 0b11111111
 #define DISPLAY_FONT_ICON_DASH 0b10111111
+#define DISPLAY_FONT_ICON_DOT 0b01111111
 #define DISPLAY_FONT_ICON_UNDERSCORE 0b11110111
 #define DISPLAY_FONT_NUMBER_0 0b11000000
 #define DISPLAY_FONT_NUMBER_1 0b11111001
@@ -206,7 +207,7 @@ uint8_t displayFourBitLedSetString(const displayFourBitLedConfig *config, const 
         }
 
         if (previousIsNumber == 1 && str[index] == '.') {
-            config->buffer[position - 1] &= 0x7F;
+            config->buffer[position - 1] &= DISPLAY_FONT_ICON_DOT;
             previousIsNumber = 0;
             continue;
         }
