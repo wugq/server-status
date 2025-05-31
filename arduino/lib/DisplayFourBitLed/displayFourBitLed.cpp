@@ -206,10 +206,10 @@ void displayFourBitLedInit(displayFourBitLedConfig *config, const int sclk, cons
     config->dio_pin = dio;
     uint8_t buffer[4];
     config->buffer = buffer;
-    config->buffer[0] = 0b11000000;
-    config->buffer[1] = 0b11000000;
-    config->buffer[2] = 0b11000000;
-    config->buffer[3] = 0b11000000;
+    config->buffer[0] = DISPLAY_FONT_ICON_SPACE;
+    config->buffer[1] = DISPLAY_FONT_ICON_SPACE;
+    config->buffer[2] = DISPLAY_FONT_ICON_SPACE;
+    config->buffer[3] = DISPLAY_FONT_ICON_SPACE;
 
     pinMode(config->sclk_pin, OUTPUT);
     pinMode(config->rclk_pin, OUTPUT);
