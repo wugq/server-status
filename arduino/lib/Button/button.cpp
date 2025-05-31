@@ -10,3 +10,9 @@ void buttonCheckState(buttonState *btnState, const int newState) {
     btnState->state = newState;
     btnState->stateChanged = changed;
 }
+
+void buttonOnRelease(buttonState *btnState) {
+    btnState->pressedCount += 1;
+    btnState->state = LOW;
+    btnState->stateChanged = 1;
+}

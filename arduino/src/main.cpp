@@ -15,12 +15,12 @@ constexpr int LED_PIN = 13; // The number of the LED pin
 int commandIndex = 0;
 int commands[4] = {1, 2, 3, 4};
 
-uint8_t ledBuffer[4];
+uint8_t LED_BUFFER[4];
 displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG = {
     .sclk_pin = 0,
     .rclk_pin = 0,
     .dio_pin = 0,
-    .buffer = ledBuffer
+    .buffer = LED_BUFFER
 };
 
 buttonState YELLOW_BTN_STATE = {
@@ -32,7 +32,7 @@ buttonState RED_BTN_STATE = {
     .pressedCount = 0,
 };
 
-serverInfoData SERVER_INFO_Data = {
+serverInfoData SERVER_INFO_DATA = {
     .cpuLoad = 0,
     .ipAddress = 0,
 };
@@ -45,8 +45,29 @@ String readSerialCommand() {
 }
 
 void printCommand(const int pressTime) {
-    constexpr int commandCount = 4;
-    const int command = commands[pressTime % commandCount];
+    constexpr int commandCount = 3;
+    const int cmdIndex = pressTime % commandCount;
+    if (cmdIndex == 0) {
+        displayFourBitLedSetFloatNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 12367.9000, 1);
+    } else if (cmdIndex == 1) {
+        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
+    } else if (cmdIndex == 2) {
+        displayFourBitLedSetIntNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 9);
+    }
+    // const int command = commands[pressTime % commandCount];
+}
+
+
+void checkYellowBtn() {
+    // buttonCheckState(&YELLOW_BTN_STATE, digitalRead(YELLOW_BTN_PIN));
+    buttonOnRelease(&YELLOW_BTN_STATE);
+    if (YELLOW_BTN_STATE.stateChanged) {
+        printCommand(YELLOW_BTN_STATE.pressedCount);
+    }
+}
+
+void checkRedBtn() {
+    buttonCheckState(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
 }
 
 void setup() {
@@ -58,9 +79,9 @@ void setup() {
     pinMode(LED_PIN, OUTPUT);
 
     displayFourBitLedInit(&DISPLAY_FOUR_BIT_LED_CONFIG, SCLK, RCLK, DIO);
-    displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
-    // displayFourBitLedSetIntNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 9);
-    // displayFourBitLedSetFloatNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 12367.9000, 1);
+
+    attachInterrupt(digitalPinToInterrupt(YELLOW_BTN_PIN), checkYellowBtn, FALLING);
+    attachInterrupt(digitalPinToInterrupt(RED_BTN_PIN), checkRedBtn, CHANGE);
 
     printCommand(YELLOW_BTN_STATE.pressedCount);
 }
@@ -70,11 +91,11 @@ void loop() {
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
     const serverInfoData newInfo = {
-        .cpuLoad = SERVER_INFO_Data.cpuLoad + 1,
-        .ipAddress = SERVER_INFO_Data.ipAddress + 1,
+        .cpuLoad = SERVER_INFO_DATA.cpuLoad + 1,
+        .ipAddress = SERVER_INFO_DATA.ipAddress + 1,
     };
 
-    serverInfoSet(&SERVER_INFO_Data, &newInfo);
+    serverInfoSet(&SERVER_INFO_DATA, &newInfo);
 
     String command = readSerialCommand();
     if (command.length() > 0) {
@@ -83,11 +104,4 @@ void loop() {
         commands[commandIndex % 4] = command.toInt();
         printCommand(YELLOW_BTN_STATE.pressedCount);
     }
-
-    buttonCheckState(&YELLOW_BTN_STATE, digitalRead(YELLOW_BTN_PIN));
-    if (YELLOW_BTN_STATE.stateChanged) {
-        printCommand(YELLOW_BTN_STATE.pressedCount);
-    }
-
-    buttonCheckState(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
 }

@@ -10,3 +10,5 @@ typedef struct {
 } buttonState;
 
 void buttonCheckState(buttonState *btnState, int newState);
+
+void buttonOnRelease(buttonState *btnState);
