@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <DIYables_4Digit7Segment_74HC595.h> // DIYables_4Digit7Segment_74HC595 library
 
 #include "button.h"
 #include "displayFourBitLed.h"
@@ -11,16 +10,12 @@
 
 constexpr int RED_BTN_PIN = 11;
 constexpr int YELLOW_BTN_PIN = 12;
-constexpr int LED_PIN = 13; // the number of the LED pin
+constexpr int LED_PIN = 13; // The number of the LED pin
 
 int commandIndex = 0;
 int commands[4] = {1, 2, 3, 4};
 
-// DIYables_4Digit7Segment_74HC595 display(SCLK, RCLK, DIO);
-
 displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG;
-
-// displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG)
 
 buttonState YELLOW_BTN_STATE = {
     .state = LOW,
@@ -46,7 +41,6 @@ String readSerialCommand() {
 void printCommand(const int pressTime) {
     constexpr int commandCount = 4;
     const int command = commands[pressTime % commandCount];
-    // display.printInt(command, false);
 }
 
 void setup() {
@@ -64,8 +58,6 @@ void setup() {
 
 
 void loop() {
-    // displayFourBitLedRender();
-    // display.loop();
     displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
@@ -90,9 +82,4 @@ void loop() {
     }
 
     buttonCheckState(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
-
-    // display.setDot(1);
-    // display.setDot(2);
-    // display.setDot(3);
-    // display.setDot(4);
 }
