@@ -30,8 +30,21 @@ void displayFourBitLedInit(displayFourBitLedConfig *config, int sclk, int rclk, 
  */
 uint8_t displayFourBitLedSetString(const displayFourBitLedConfig *config, const char *str);
 
+/**
+ * Clear the display
+ * @param config Display Config instance
+ */
 void displayFourBitLedClear(const displayFourBitLedConfig *config);
 
+/**
+ * Set the integer number to display
+ * @param config Display Config instance
+ * @param number the number
+ */
 void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, const int number);
 
+/**
+ * Render the content of the display
+ * @param config Display Config instance
+ */
 void displayFourBitLedRender(const displayFourBitLedConfig *config);
