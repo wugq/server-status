@@ -3,7 +3,8 @@
 
 // ============= values =============
 
-/* common labeling:
+/*
+ * common labeling:
  *   aaa    |   000
  *  f   b   |  5   1
  *  f   b   |  5   1
@@ -11,9 +12,8 @@
  *  e   c   |  4   2
  *  e   c   |  4   2
  *   ddd dp |   333 77
-*/
-
-/* bits mapping
+ *
+ * bits mapping
  * 0 | a
  * 1 | b
  * 2 | c
@@ -23,7 +23,9 @@
  * 6 | g
  * 7 | dp
 */
+
 // 0 is on, 1 is off;
+
 #define DISPLAY_FONT_ICON_SPACE 0b11111111
 #define DISPLAY_FONT_ICON_DASH 0b10111111
 #define DISPLAY_FONT_ICON_DOT 0b01111111
