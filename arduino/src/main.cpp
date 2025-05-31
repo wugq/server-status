@@ -15,7 +15,13 @@ constexpr int LED_PIN = 13; // The number of the LED pin
 int commandIndex = 0;
 int commands[4] = {1, 2, 3, 4};
 
-displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG;
+uint8_t ledBuffer[4];
+displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG = {
+    .sclk_pin = 0,
+    .rclk_pin = 0,
+    .dio_pin = 0,
+    .buffer = ledBuffer
+};
 
 buttonState YELLOW_BTN_STATE = {
     .state = LOW,
@@ -52,15 +58,15 @@ void setup() {
     pinMode(LED_PIN, OUTPUT);
 
     displayFourBitLedInit(&DISPLAY_FOUR_BIT_LED_CONFIG, SCLK, RCLK, DIO);
+    displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
+    // displayFourBitLedSetIntNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 9);
+    // displayFourBitLedSetFloatNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 12367.9000, 1);
 
     printCommand(YELLOW_BTN_STATE.pressedCount);
 }
 
 
 void loop() {
-    // displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
-    // displayFourBitLedSetIntNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 9);
-    displayFourBitLedSetFloatNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 12367.9000, 1);
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
     const serverInfoData newInfo = {
