@@ -12,14 +12,13 @@ public class Main {
             main.sendMessage();
         };
 
-        scheduler.scheduleAtFixedRate(task, 5, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.SECONDS);
     }
 
     private void sendMessage() {
         ServerInfo serverInfo = new ServerInfo();
 
         SerialConnection serialConnection = new SerialConnection("ttyUSB0", 9600);
-
         ServerInfoDto serverInfoDto = serverInfo.collect();
         System.out.println(serverInfoDto.toJson());
         serialConnection.send(serverInfoDto.toJson());
