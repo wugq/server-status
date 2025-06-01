@@ -3,6 +3,7 @@
 #include "button.h"
 #include "displayFourBitLed.h"
 #include "serverInfo.h"
+#include "serverInfoDisplay.h"
 
 #define SCLK  4  // The Arduino pin connected to SCLK
 #define RCLK  3  // The Arduino pin connected to RCLK
@@ -32,9 +33,17 @@ buttonState RED_BTN_STATE = {
     .pressedCount = 0,
 };
 
+char SERVER_INFO_IP_ADDRESS[16] = "";
 serverInfoData SERVER_INFO_DATA = {
+    .functionCount = 0,
     .cpuLoad = 0,
-    .ipAddress = 0,
+    .ipAddress = SERVER_INFO_IP_ADDRESS,
+};
+
+char SERVER_INFO_DISPLAY_MESSAGE[20] = "Hi";
+serverInfoDisplayData SERVER_INFO_DISPLAY_DATA = {
+    .index = 0,
+    .message = SERVER_INFO_DISPLAY_MESSAGE,
 };
 
 String readSerialCommand() {
@@ -48,26 +57,25 @@ void printCommand(const int pressTime) {
     constexpr int commandCount = 3;
     const int cmdIndex = pressTime % commandCount;
     if (cmdIndex == 0) {
-        displayFourBitLedSetFloatNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 12367.9000, 1);
+        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "1");
     } else if (cmdIndex == 1) {
-        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "CP90");
+        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "2");
     } else if (cmdIndex == 2) {
-        displayFourBitLedSetIntNumber(&DISPLAY_FOUR_BIT_LED_CONFIG, 9);
+        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "3");
     }
-    // const int command = commands[pressTime % commandCount];
 }
 
 
-void checkYellowBtn() {
-    // buttonCheckState(&YELLOW_BTN_STATE, digitalRead(YELLOW_BTN_PIN));
+void onReleaseYellowBtn() {
     buttonOnRelease(&YELLOW_BTN_STATE);
-    if (YELLOW_BTN_STATE.stateChanged) {
-        printCommand(YELLOW_BTN_STATE.pressedCount);
-    }
+
+    serverInfoDisplaySetMessage(&SERVER_INFO_DISPLAY_DATA, &SERVER_INFO_DATA, &YELLOW_BTN_STATE);
+    serverInfoDisplaySetDisplay(&SERVER_INFO_DISPLAY_DATA, &DISPLAY_FOUR_BIT_LED_CONFIG);
 }
 
-void checkRedBtn() {
+void onReleaseRedBtn() {
     buttonCheckState(&RED_BTN_STATE, digitalRead(RED_BTN_PIN));
+    serverInfoDisplaySetDisplay(&SERVER_INFO_DISPLAY_DATA, &DISPLAY_FOUR_BIT_LED_CONFIG);
 }
 
 void setup() {
@@ -78,24 +86,26 @@ void setup() {
     pinMode(YELLOW_BTN_PIN, INPUT);
     pinMode(LED_PIN, OUTPUT);
 
+    serverInfoInit(&SERVER_INFO_DATA);
+
     displayFourBitLedInit(&DISPLAY_FOUR_BIT_LED_CONFIG, SCLK, RCLK, DIO);
 
-    attachInterrupt(digitalPinToInterrupt(YELLOW_BTN_PIN), checkYellowBtn, FALLING);
-    attachInterrupt(digitalPinToInterrupt(RED_BTN_PIN), checkRedBtn, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(YELLOW_BTN_PIN), onReleaseYellowBtn, FALLING);
+    attachInterrupt(digitalPinToInterrupt(RED_BTN_PIN), onReleaseRedBtn, FALLING);
 
-    printCommand(YELLOW_BTN_STATE.pressedCount);
+    serverInfoDisplaySetDisplay(&SERVER_INFO_DISPLAY_DATA, &DISPLAY_FOUR_BIT_LED_CONFIG);
 }
 
 
 void loop() {
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
-    const serverInfoData newInfo = {
-        .cpuLoad = SERVER_INFO_DATA.cpuLoad + 1,
-        .ipAddress = SERVER_INFO_DATA.ipAddress + 1,
-    };
-
-    serverInfoSet(&SERVER_INFO_DATA, &newInfo);
+    // const serverInfoData newInfo = {
+    //     .cpuLoad = SERVER_INFO_DATA.cpuLoad + 1,
+    //     .ipAddress = SERVER_INFO_DATA.ipAddress + 1,
+    // };
+    //
+    // serverInfoSet(&SERVER_INFO_DATA, &newInfo);
 
     String command = readSerialCommand();
     if (command.length() > 0) {

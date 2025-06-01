@@ -1,22 +1,14 @@
 #include "serverInfo.h"
 
-void printCPU() {
-}
+#include <cstring>
 
-void printIP() {
-}
-
-void print(int index) {
-    int idx = index % 2;
-
-    if (idx == 0) {
-        printCPU();
-    } else {
-        printIP();
-    }
+void serverInfoInit(serverInfoData *srvInfoData) {
+    srvInfoData->functionCount = 2;
+    srvInfoData->cpuLoad = 0;
+    strcpy(srvInfoData->ipAddress, "192.168.0.123");
 }
 
 void serverInfoSet(serverInfoData *srvInfoData, const serverInfoData *newInfo) {
     srvInfoData->cpuLoad = newInfo->cpuLoad;
-    srvInfoData->ipAddress = newInfo->ipAddress;
+    strcpy(srvInfoData->ipAddress, newInfo->ipAddress);
 }

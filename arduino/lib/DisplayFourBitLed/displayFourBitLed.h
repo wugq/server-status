@@ -1,3 +1,7 @@
+#pragma once
+
+#include <cstdint>
+
 #ifndef DISPLAY4BITLED_H
 #define DISPLAY4BITLED_H
 

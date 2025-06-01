@@ -245,6 +245,11 @@ uint8_t displayFourBitLedSetString(const displayFourBitLedConfig *config, const 
         }
     }
 
+    if (position == 4 && previousIsNumber == 1 && str[index] == '.') {
+        config->buffer[position - 1] &= DISPLAY_FONT_ICON_DOT;
+        index++;
+    }
+
     for (; position < 4; position++) {
         config->buffer[position] = DISPLAY_FONT_ICON_SPACE;
     }
