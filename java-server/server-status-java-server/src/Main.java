@@ -21,6 +21,6 @@ public class Main {
         SerialConnection serialConnection = new SerialConnection("ttyUSB0", 9600);
         ServerInfoDto serverInfoDto = serverInfo.collect();
         System.out.println(serverInfoDto.toJson());
-        serialConnection.send(serverInfoDto.toJson());
+        serialConnection.send(serverInfoDto.toTTL());
     }
 }

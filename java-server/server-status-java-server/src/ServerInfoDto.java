@@ -11,4 +11,8 @@ public class ServerInfoDto {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
+
+    public String toTTL() {
+        return String.format("C:%s;S:%s;I:%s", cpuLoad, sysLoad, ipAddress);
+    }
 }
