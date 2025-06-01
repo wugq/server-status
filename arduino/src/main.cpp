@@ -33,7 +33,7 @@ buttonState RED_BTN_STATE = {
     .pressedCount = 0,
 };
 
-char SERVER_INFO_IP_ADDRESS[16] = "";
+char SERVER_INFO_IP_ADDRESS[IPADDRESS_SIZE] = "";
 serverInfoData SERVER_INFO_DATA = {
     .functionCount = 0,
     .cpuLoad = 0,
@@ -46,25 +46,12 @@ serverInfoDisplayData SERVER_INFO_DISPLAY_DATA = {
     .message = SERVER_INFO_DISPLAY_MESSAGE,
 };
 
-String readSerialCommand() {
+String readSerialData() {
     if (Serial1.available() > 0) {
         return Serial1.readStringUntil('\n');
     }
     return "";
 }
-
-void printCommand(const int pressTime) {
-    constexpr int commandCount = 3;
-    const int cmdIndex = pressTime % commandCount;
-    if (cmdIndex == 0) {
-        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "1");
-    } else if (cmdIndex == 1) {
-        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "2");
-    } else if (cmdIndex == 2) {
-        displayFourBitLedSetString(&DISPLAY_FOUR_BIT_LED_CONFIG, "3");
-    }
-}
-
 
 void onReleaseYellowBtn() {
     buttonOnRelease(&YELLOW_BTN_STATE);
@@ -100,18 +87,8 @@ void setup() {
 void loop() {
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
-    // const serverInfoData newInfo = {
-    //     .cpuLoad = SERVER_INFO_DATA.cpuLoad + 1,
-    //     .ipAddress = SERVER_INFO_DATA.ipAddress + 1,
-    // };
-    //
-    // serverInfoSet(&SERVER_INFO_DATA, &newInfo);
-
-    String command = readSerialCommand();
+    String command = readSerialData();
     if (command.length() > 0) {
         Serial.println(command);
-        commandIndex++;
-        commands[commandIndex % 4] = command.toInt();
-        printCommand(YELLOW_BTN_STATE.pressedCount);
     }
 }

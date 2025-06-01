@@ -9,7 +9,7 @@
 
 #endif //SERVERINFODISPLAY_H
 
-constexpr int IPADDRESS_SIZE = 16;
+constexpr int IPADDRESS_SIZE = 16 * 2;
 
 typedef struct {
     unsigned int index;
