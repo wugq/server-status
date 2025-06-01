@@ -1,7 +1,7 @@
 import com.fazecast.jSerialComm.SerialPort;
 
 public class SerialConnection {
-    private SerialPort comPort;
+    private final SerialPort comPort;
 
     SerialConnection(String port, int baudRate) {
         comPort = SerialPort.getCommPort(port);

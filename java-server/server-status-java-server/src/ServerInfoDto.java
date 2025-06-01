@@ -9,7 +9,6 @@ public class ServerInfoDto {
 
     public String toJson() {
         Gson gson = new Gson();
-        String json = gson.toJson(this);
-        return json;
+        return gson.toJson(this);
     }
 }
