@@ -24,7 +24,7 @@ void setCPUInfo(serverInfoDisplayData *srvInfoDisplayData, const int cpuLoad) {
 }
 
 void setIpAddrInfo(serverInfoDisplayData *srvInfoDisplayData, const char *ipAddress) {
-    char message[IPADDRESS_SIZE + 2] = "IP";
+    char message[IPADDRESS_DATA_SIZE + 2] = "IP";
     strcat(message, ipAddress);
     strcpy(srvInfoDisplayData->message, message);
     srvInfoDisplayData->length = strlen(srvInfoDisplayData->message);

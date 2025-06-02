@@ -35,7 +35,7 @@ buttonState RED_BTN_STATE = {
 };
 
 /********************************************************/
-char SERVER_INFO_IP_ADDRESS[IPADDRESS_SIZE] = "";
+char SERVER_INFO_IP_ADDRESS[IPADDRESS_DATA_SIZE] = "";
 serverInfoData SERVER_INFO_DATA = {
     .functionCount = 0,
     .cpuLoad = 0,
