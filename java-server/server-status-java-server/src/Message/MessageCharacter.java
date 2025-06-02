@@ -11,7 +11,7 @@ public enum MessageCharacter {
         System.out.println(MessageCharacter.SEPARATOR.value);
     }
 
-    MessageCharacter(char character) {
-        this.value = (byte) character;
+    MessageCharacter(char value) {
+        this.value = (byte) value;
     }
 }

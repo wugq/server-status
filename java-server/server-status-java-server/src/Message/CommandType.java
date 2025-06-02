@@ -1,7 +1,7 @@
 package Message;
 
 public enum CommandType {
-    CPU_LOAD(1), IP_ADDRESS(2);
+    CPU_LOAD('C'), IP_ADDRESS('I');
 
     public static void main(String[] args) {
         System.out.println(CommandType.CPU_LOAD.value);
@@ -10,10 +10,7 @@ public enum CommandType {
 
     public final byte value;
 
-    CommandType(int value) {
-        if (value > 200) {
-            throw new IllegalArgumentException("Value must be less than 200.");
-        }
+    CommandType(char value) {
         this.value = (byte) value;
     }
 }
