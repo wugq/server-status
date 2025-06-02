@@ -14,8 +14,12 @@ public class Main {
             Main.runTask();
         };
 
-        Main.runTask();
-//        scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.SECONDS);
+        boolean isSchedule = true;
+        if (isSchedule) {
+            scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.SECONDS);
+        } else {
+            Main.runTask();
+        }
     }
 
     private static void runTask() {
