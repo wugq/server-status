@@ -4,6 +4,7 @@
 #include "displayFourBitLed.h"
 #include "serverInfo.h"
 #include "serverInfoDisplay.h"
+#include "messageParser.h"
 
 #define SCLK  4  // The Arduino pin connected to SCLK
 #define RCLK  3  // The Arduino pin connected to RCLK
@@ -16,6 +17,7 @@ constexpr int LED_PIN = 13; // The number of the LED pin
 int commandIndex = 0;
 int commands[4] = {1, 2, 3, 4};
 
+/********************************************************/
 uint8_t LED_BUFFER[4];
 displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG = {
     .sclk_pin = 0,
@@ -24,6 +26,7 @@ displayFourBitLedConfig DISPLAY_FOUR_BIT_LED_CONFIG = {
     .buffer = LED_BUFFER
 };
 
+/********************************************************/
 buttonState YELLOW_BTN_STATE = {
     .state = LOW,
     .pressedCount = 0,
@@ -33,6 +36,7 @@ buttonState RED_BTN_STATE = {
     .pressedCount = 0,
 };
 
+/********************************************************/
 char SERVER_INFO_IP_ADDRESS[IPADDRESS_SIZE] = "";
 serverInfoData SERVER_INFO_DATA = {
     .functionCount = 0,
@@ -40,17 +44,26 @@ serverInfoData SERVER_INFO_DATA = {
     .ipAddress = SERVER_INFO_IP_ADDRESS,
 };
 
-char SERVER_INFO_DISPLAY_MESSAGE[20] = "Hi";
+/********************************************************/
+char SERVER_INFO_DISPLAY_MESSAGE[20] = "____";
 serverInfoDisplayData SERVER_INFO_DISPLAY_DATA = {
     .index = 0,
     .message = SERVER_INFO_DISPLAY_MESSAGE,
 };
 
-String readSerialData() {
-    if (Serial1.available() > 0) {
-        return Serial1.readStringUntil('\n');
+/********************************************************/
+uint8_t messageBuffer[MESSAGE_PARSER_BUFFER_SIZE];
+messageParserBuffer MESSAGE_PARSER_BUFFER = {
+    .message = messageBuffer,
+    .currentIndex = 0
+};
+
+void readSerialData() {
+    if (Serial1.available() <= 0) {
+        return;
     }
-    return "";
+    const int c = Serial1.read();
+    messageParserDoParse(&SERVER_INFO_DATA, &MESSAGE_PARSER_BUFFER, c);
 }
 
 void onReleaseYellowBtn() {
@@ -87,8 +100,5 @@ void setup() {
 void loop() {
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
-    String command = readSerialData();
-    if (command.length() > 0) {
-        Serial.println(command);
-    }
+    readSerialData();
 }

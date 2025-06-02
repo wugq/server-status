@@ -38,13 +38,18 @@ String readSerialCommand() {
 }
 
 void loop() {
-    const String command = readSerialCommand();
+    // const String command = readSerialCommand();
 
     // Serial.print("Command received: ");
     // Serial.println(command);
-    if (command.length() > 1) {
-        Serial.print("Command received---: ");
-        Serial.println(command);
-        //     // Process the command here
+    // if (command.length() > 1) {
+    //     Serial.print("Command received---: ");
+    //     Serial.println(command);
+    //     //     // Process the command here
+    // }
+
+    if (Serial1.available() > 0) {
+        const int a = Serial1.read();
+        Serial.println(a);
     }
 }
