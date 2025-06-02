@@ -8,9 +8,14 @@
 #endif //MESSAGEPARSER_H
 
 constexpr int MESSAGE_PARSER_BUFFER_SIZE = 200;
+
 typedef struct {
     uint8_t *message;
     uint8_t currentIndex;
+    uint8_t cpuLoadStart;
+    uint8_t cpuLoadEnd;
+    uint8_t ipAddressStart;
+    uint8_t ipAddressEnd;
 } messageParserBuffer;
 
 /**

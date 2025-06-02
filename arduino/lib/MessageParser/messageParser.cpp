@@ -45,15 +45,65 @@ bool checkMessage(const messageParserBuffer *msgParserBuffer) {
     return true;
 }
 
-
 void resetBuffer(messageParserBuffer *msgParserBuffer) {
     msgParserBuffer->currentIndex = 0;
+    msgParserBuffer->cpuLoadStart = 0;
+    msgParserBuffer->cpuLoadEnd = 0;
+    msgParserBuffer->ipAddressStart = 0;
+    msgParserBuffer->ipAddressEnd = 0;
     memset(msgParserBuffer->message, 0, sizeof(msgParserBuffer->message));
 }
 
 
+void findServerInfoData(const messageParserBuffer *msgParserBuffer,
+                        const char type,
+                        uint8_t *startPtr,
+                        uint8_t *endPtr) {
+    bool isFound = false;
+    for (int i = 0; i < msgParserBuffer->currentIndex; i++) {
+        if (msgParserBuffer->message[i] == '#' && msgParserBuffer->message[i + 1] == type) {
+            *startPtr = i + 2;
+            isFound = true;
+            continue;
+        }
+        if (isFound && (
+                msgParserBuffer->message[i] == '#' ||
+                msgParserBuffer->message[i] == '>')
+        ) {
+            *endPtr = i - 1;
+            isFound = false;
+        }
+    }
+}
+
+void setCpuLoad(serverInfoData *srvInfoData, const messageParserBuffer *msgParserBuffer) {
+    if (msgParserBuffer->cpuLoadStart == 0 || msgParserBuffer->cpuLoadEnd == 0) {
+        return;
+    }
+    if (msgParserBuffer->cpuLoadEnd < msgParserBuffer->cpuLoadStart) {
+        return;
+    }
+    if (msgParserBuffer->cpuLoadEnd != msgParserBuffer->cpuLoadStart) {
+        return;
+    }
+
+    srvInfoData->cpuLoad = msgParserBuffer->message[msgParserBuffer->cpuLoadStart];
+}
+
+
 void setServerInfoData(serverInfoData *srvInfoData, messageParserBuffer *msgParserBuffer) {
-    Serial.println("setServerInfoData");
+    findServerInfoData(msgParserBuffer, 'C', &msgParserBuffer->cpuLoadStart, &msgParserBuffer->cpuLoadEnd);
+    findServerInfoData(msgParserBuffer, 'I', &msgParserBuffer->ipAddressStart, &msgParserBuffer->ipAddressEnd);
+
+    setCpuLoad(srvInfoData, msgParserBuffer);
+
+
+
+    Serial.print("ipAddressStart: ");
+    Serial.print(msgParserBuffer->ipAddressStart);
+    Serial.print("ipAddressEnd: ");
+    Serial.println(msgParserBuffer->ipAddressEnd);
+
 }
 
 

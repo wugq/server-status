@@ -6,6 +6,7 @@
 #include "serverInfoDisplay.h"
 #include "messageParser.h"
 
+/********************************************************/
 #define SCLK  4  // The Arduino pin connected to SCLK
 #define RCLK  3  // The Arduino pin connected to RCLK
 #define DIO   2  // The Arduino pin connected to DIO
@@ -13,9 +14,6 @@
 constexpr int RED_BTN_PIN = 11;
 constexpr int YELLOW_BTN_PIN = 12;
 constexpr int LED_PIN = 13; // The number of the LED pin
-
-int commandIndex = 0;
-int commands[4] = {1, 2, 3, 4};
 
 /********************************************************/
 uint8_t LED_BUFFER[4];
@@ -55,9 +53,14 @@ serverInfoDisplayData SERVER_INFO_DISPLAY_DATA = {
 uint8_t messageBuffer[MESSAGE_PARSER_BUFFER_SIZE];
 messageParserBuffer MESSAGE_PARSER_BUFFER = {
     .message = messageBuffer,
-    .currentIndex = 0
+    .currentIndex = 0,
+    .cpuLoadStart = 0,
+    .cpuLoadEnd = 0,
+    .ipAddressStart = 0,
+    .ipAddressEnd = 0,
 };
 
+/********************************************************/
 void readSerialData() {
     if (Serial1.available() <= 0) {
         return;
@@ -78,6 +81,7 @@ void onReleaseRedBtn() {
     serverInfoDisplaySetDisplay(&SERVER_INFO_DISPLAY_DATA, &DISPLAY_FOUR_BIT_LED_CONFIG);
 }
 
+/********************************************************/
 void setup() {
     Serial.begin(9600);
     Serial1.begin(9600); // Connect to 0RX,1TX
@@ -95,7 +99,6 @@ void setup() {
 
     serverInfoDisplaySetDisplay(&SERVER_INFO_DISPLAY_DATA, &DISPLAY_FOUR_BIT_LED_CONFIG);
 }
-
 
 void loop() {
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
