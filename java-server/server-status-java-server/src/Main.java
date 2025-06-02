@@ -1,3 +1,6 @@
+import Message.CommandType;
+import Message.Message;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -8,11 +11,16 @@ public class Main {
 
         Runnable task = () -> {
             System.out.println("Running task at " + java.time.LocalTime.now());
-            Main main = new Main();
-            main.sendMessage();
+            Main.runTask();
         };
 
-        scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.SECONDS);
+        Main.runTask();
+//        scheduler.scheduleAtFixedRate(task, 1, 10, TimeUnit.SECONDS);
+    }
+
+    private static void runTask() {
+        Main main = new Main();
+        main.sendMessage();
     }
 
     private void sendMessage() {
@@ -20,7 +28,10 @@ public class Main {
 
         SerialConnection serialConnection = new SerialConnection("ttyUSB0", 9600);
         ServerInfoDto serverInfoDto = serverInfo.collect();
-        System.out.println(serverInfoDto.toJson());
-        serialConnection.send(serverInfoDto.toTTL());
+        Message message = new Message();
+        message.add(CommandType.CPU_LOAD.value, new byte[]{serverInfoDto.getCpuLoad()});
+        message.add(CommandType.IP_ADDRESS.value, serverInfoDto.getIpAddressList());
+        System.out.println(serverInfoDto.toString());
+        serialConnection.send(message.generate());
     }
 }

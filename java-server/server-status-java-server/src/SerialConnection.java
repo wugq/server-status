@@ -9,12 +9,16 @@ public class SerialConnection {
     }
 
     public void send(String message) {
+        this.send(message.getBytes());
+    }
+
+    public void send(byte[] message) {
         if (!comPort.openPort()) {
             throw new Error("Failed to open Port.");
         }
 
         try {
-            comPort.getOutputStream().write(message.getBytes());
+            comPort.getOutputStream().write(message);
             comPort.getOutputStream().flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,5 +27,4 @@ public class SerialConnection {
             comPort.closePort();
         }
     }
-
 }

@@ -1,18 +1,59 @@
 import com.google.gson.Gson;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class ServerInfoDto {
-    private String cpuLoad;
-    private String sysLoad;
-    private String ipAddress;
+    public final byte supportedIpAddressNumber = 3;
 
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+    @Getter
+    private byte cpuLoad;
+
+    private final byte[] ipAddressList = new byte[1 + 4 * supportedIpAddressNumber];
+
+    private byte getIpAddressNumber() {
+        return ipAddressList[0];
     }
 
-    public String toTTL() {
-        return String.format("#C%s#S%s#I%s", cpuLoad, sysLoad, ipAddress);
+    public static void main(String[] args) {
+        ServerInfoDto serverInfoDto = new ServerInfoDto();
+        serverInfoDto.setCpuLoad(10);
+        serverInfoDto.addIPAddress(new byte[]{127, 0, 0, 1});
+        serverInfoDto.addIPAddress(new byte[]{192 - 256, 168 - 256, 0, 123});
+
+        serverInfoDto.getIpAddressList();
+        serverInfoDto.getCpuLoad();
+
+        System.out.println(new Gson().toJson(serverInfoDto));
+    }
+
+    public byte[] getIpAddressList() {
+        byte[] ipAddressList = new byte[1 + this.ipAddressList[0] * 4];
+        System.arraycopy(this.ipAddressList, 0, ipAddressList, 0, ipAddressList.length);
+        return ipAddressList;
+    }
+
+    public void setCpuLoad(int number) {
+        if (number > 100) {
+            return;
+        }
+        this.cpuLoad = (byte) number;
+    }
+
+    public void addIPAddress(byte[] ipAddress) {
+        if (ipAddress.length != 4) {
+            return;
+        }
+        if (getIpAddressNumber() >= supportedIpAddressNumber) {
+            return;
+        }
+
+        int startPosition = 1 + 4 * getIpAddressNumber();
+        System.arraycopy(ipAddress, 0, ipAddressList, startPosition, 4);
+        ipAddressList[0] = (byte) (getIpAddressNumber() + 1);
+    }
+
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }
