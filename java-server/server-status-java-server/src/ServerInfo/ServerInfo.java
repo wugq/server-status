@@ -1,3 +1,5 @@
+package ServerInfo;
+
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 

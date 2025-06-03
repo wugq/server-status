@@ -1,3 +1,5 @@
+package ServerInfo;
+
 import com.google.gson.Gson;
 import lombok.AccessLevel;
 import lombok.Getter;

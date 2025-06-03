@@ -8,6 +8,9 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import ServerInfo.ServerInfo;
+import ServerInfo.ServerInfoDto;
 import lombok.Data;
 
 public class Main {
