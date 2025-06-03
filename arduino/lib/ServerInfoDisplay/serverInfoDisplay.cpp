@@ -1,9 +1,8 @@
+#include "serverInfoDisplay.h"
 #include <cstring>
 #include <api/itoa.h>
 
-#include "serverInfoDisplay.h"
-
-
+// ============= private methods =============
 void setCPUInfo(serverInfoDisplayData *srvInfoDisplayData, const int cpuLoad) {
     char message[5] = "CP";
     char cpuLoadStr[3];
@@ -30,6 +29,7 @@ void setIpAddrInfo(serverInfoDisplayData *srvInfoDisplayData, const char *ipAddr
     srvInfoDisplayData->length = strlen(srvInfoDisplayData->message);
 }
 
+// ============= public methods =============
 void serverInfoDisplaySetMessage(serverInfoDisplayData *srvInfoDisplayData,
                                  const serverInfoData *srvInfoData,
                                  const buttonState *btnState) {

@@ -1,5 +1,5 @@
-#include <Arduino.h>
 #include "displayFourBitLed.h"
+#include <Arduino.h>
 
 // ============= values =============
 

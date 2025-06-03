@@ -1,6 +1,7 @@
 #include "button.h"
 #include <Arduino.h>
 
+// ============= public methods =============
 void buttonCheckState(buttonState *btnState, const int newState) {
     int changed = 0;
     if (newState == LOW && btnState->state == HIGH) {

@@ -2,10 +2,11 @@
 
 #include <cstring>
 
+// ============= public methods =============
 void serverInfoInit(serverInfoData *srvInfoData) {
     srvInfoData->functionCount = 2;
     srvInfoData->cpuLoad = 0;
-    strcpy(srvInfoData->ipAddress, "192.168.0.123");
+    strcpy(srvInfoData->ipAddress, "0.0.0.0");
 }
 
 void serverInfoSet(serverInfoData *srvInfoData, const serverInfoData *newInfo) {

@@ -5,6 +5,7 @@
 
 #include "serverInfoDisplay.h"
 
+// ============= private methods =============
 void printHeader(const char *header, const int length) {
     const int space = (length - strlen(header) - 2) / 2;
     for (int i = 0; i < space; i++) {
@@ -49,7 +50,6 @@ void resetBuffer(messageParserBuffer *msgParserBuffer) {
     msgParserBuffer->ipAddressEnd = 0;
     memset(msgParserBuffer->message, 0, sizeof(msgParserBuffer->message));
 }
-
 
 void findServerInfoData(const messageParserBuffer *msgParserBuffer,
                         const char type,
@@ -129,7 +129,6 @@ void setIpAddress(const serverInfoData *srvInfoData, const messageParserBuffer *
     strcpy(srvInfoData->ipAddress, ipAddressBuffer);
 }
 
-
 void setServerInfoData(serverInfoData *srvInfoData, messageParserBuffer *msgParserBuffer) {
     findServerInfoData(msgParserBuffer, 'C', &msgParserBuffer->cpuLoadStart, &msgParserBuffer->cpuLoadEnd);
     findServerInfoData(msgParserBuffer, 'I', &msgParserBuffer->ipAddressStart, &msgParserBuffer->ipAddressEnd);
@@ -138,7 +137,7 @@ void setServerInfoData(serverInfoData *srvInfoData, messageParserBuffer *msgPars
     setIpAddress(srvInfoData, msgParserBuffer);
 }
 
-
+// ============= public methods =============
 void messageParserDoParse(serverInfoData *srvInfoData, messageParserBuffer *msgParserBuffer, const int incomingData) {
     msgParserBuffer->message[msgParserBuffer->currentIndex++] = incomingData;
     if (incomingData != '>') {
