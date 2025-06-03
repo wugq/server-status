@@ -288,7 +288,6 @@ void displayFourBitLedSetIntNumber(const displayFourBitLedConfig *config, const 
 
 
 void displayFourBitLedSetFloatNumber(const displayFourBitLedConfig *config, const float number, int precision) {
-    // TODO: improve performance as the LEDs get dimmed.
     const float divisor = pow(10, 4);
     const float remainder = fmod(number, divisor);
 
