@@ -5,6 +5,7 @@
 #include "serverInfo.h"
 #include "serverInfoDisplay.h"
 #include "messageParser.h"
+#include "messageReply.h"
 
 /********************************************************/
 #define SCLK  4  // The Arduino pin connected to SCLK
@@ -61,6 +62,12 @@ messageParserBuffer MESSAGE_PARSER_BUFFER = {
 };
 
 /********************************************************/
+uint8_t messageReplyBuffer[10];
+messageReplyData MESSAGE_REPLY_DATA = {
+    .message = messageReplyBuffer,
+};
+
+/********************************************************/
 void readSerialData() {
     if (Serial1.available() <= 0) {
         return;
@@ -104,4 +111,6 @@ void loop() {
     displayFourBitLedRender(&DISPLAY_FOUR_BIT_LED_CONFIG);
 
     readSerialData();
+
+    sendReply(&MESSAGE_REPLY_DATA);
 }
