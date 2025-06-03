@@ -35,7 +35,7 @@ public class Main {
         Message message = new Message();
         message.add(CommandType.CPU_LOAD.value, new byte[]{serverInfoDto.getCpuLoad()});
         message.add(CommandType.IP_ADDRESS.value, serverInfoDto.getIpAddressList());
-        System.out.println(serverInfoDto.toString());
+        System.out.println(serverInfoDto);
         serialConnection.send(message.generate());
     }
 }
