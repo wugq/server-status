@@ -31,17 +31,13 @@ void printMessage(const messageParserBuffer *msgParserBuffer) {
 }
 
 bool checkMessage(const messageParserBuffer *msgParserBuffer) {
-    printHeader("Check Message", 30);
     if (msgParserBuffer->message[1] != msgParserBuffer->currentIndex) {
-        Serial.println("Message is not completed\n");
         return false;
     }
     if (msgParserBuffer->message[0] != '<' ||
         msgParserBuffer->message[msgParserBuffer->currentIndex - 1] != '>') {
-        Serial.println("Message is not completed\n");
         return false;
     }
-    Serial.println("Check Message finished\n");
     return true;
 }
 
@@ -90,7 +86,7 @@ void setCpuLoad(serverInfoData *srvInfoData, const messageParserBuffer *msgParse
     srvInfoData->cpuLoad = msgParserBuffer->message[msgParserBuffer->cpuLoadStart];
 }
 
-void setIpAddress(serverInfoData *srvInfoData, const messageParserBuffer *msgParserBuffer) {
+void setIpAddress(const serverInfoData *srvInfoData, const messageParserBuffer *msgParserBuffer) {
     if (msgParserBuffer->ipAddressStart == 0 || msgParserBuffer->ipAddressEnd == 0) {
         return;
     }
@@ -130,9 +126,6 @@ void setIpAddress(serverInfoData *srvInfoData, const messageParserBuffer *msgPar
         }
     }
 
-    Serial.println(charBuffer);
-    Serial.println(ipAddressBuffer);
-
     strcpy(srvInfoData->ipAddress, ipAddressBuffer);
 }
 
@@ -152,7 +145,7 @@ void messageParserDoParse(serverInfoData *srvInfoData, messageParserBuffer *msgP
         return;
     }
 
-    printMessage(msgParserBuffer);
+    // printMessage(msgParserBuffer);
     if (checkMessage(msgParserBuffer)) {
         setServerInfoData(srvInfoData, msgParserBuffer);
     }
