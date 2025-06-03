@@ -24,9 +24,9 @@ public class Message {
   public void add(byte messageType, byte[] message) {
     this.message[messageIndex++] = MessageCharacter.SEPARATOR.value;
     this.message[messageIndex++] = messageType;
-    for (int i = 0; i < message.length; i++) {
-      this.message[messageIndex++] = message[i];
-    }
+      for (byte b : message) {
+          this.message[messageIndex++] = b;
+      }
   }
 
   public byte[] generate() {
