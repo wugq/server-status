@@ -9,9 +9,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import Serial.ConnectionStatus;
+import Serial.SerialConnection;
 import ServerInfo.ServerInfo;
 import ServerInfo.ServerInfoDto;
-import lombok.Data;
 
 public class Main {
   private final Random random = new Random();
@@ -119,9 +120,3 @@ public class Main {
   }
 }
 
-@Data()
-class ConnectionStatus {
-  public SerialConnection connection;
-  public boolean isValidConnection;
-  public byte token;
-}

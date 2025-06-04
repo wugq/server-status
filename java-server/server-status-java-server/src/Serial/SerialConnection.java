@@ -1,3 +1,5 @@
+package Serial;
+
 import Message.MessageHandler;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
@@ -12,7 +14,7 @@ public class SerialConnection {
 
   private MessageHandler messageHandler;
 
-  SerialConnection(String port, int baudRate) {
+  public  SerialConnection(String port, int baudRate) {
     comPort = SerialPort.getCommPort(port);
     comPort.setBaudRate(baudRate);
   }
